@@ -34,13 +34,14 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React, { useState, useRef } from 'react';
-import PropTypes from 'prop-types';
+import React, { useRef, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Overlay from 'react-bootstrap/Overlay';
 import Popover from 'react-bootstrap/Popover';
-import RegionInfoView from './RegionInfoView';
+import PropTypes from 'prop-types';
+
 import CoreInfoView from './CoreInfoView';
+import RegionInfoView from './RegionInfoView';
 
 const RegionView = ({
     width,
@@ -115,7 +116,7 @@ const RegionView = ({
             {region && region.fileNames.length > 0 && !active && (
                 <Button
                     className="transparent"
-                    onClick={() => removeFile(region.fileNames.pop())}
+                    onClick={() => removeFile(region.fileNames[0])}
                 >
                     <span className="mdi mdi-minus-circle" />
                 </Button>

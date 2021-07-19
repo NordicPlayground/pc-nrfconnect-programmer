@@ -34,25 +34,62 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-// Small utility - takes in an integer, returns a string
-// representing that integer as a string of 8 hexadecimal
-// numbers prepended by '0x'.
-export function hexpad8(n) {
-    return `0x${n.toString(16).toUpperCase().padStart(8, '0')}`;
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+import produce from 'immer';
+
+import * as fileActions from '../actions/fileActions';
+import { Region } from '../util/regions';
+
+export interface FileState {
+    detectedRegionNames: Set<string>;
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    loaded: {};
+    mcubootFilePath?: string;
+    memMaps: [];
+    mruFiles: string[];
+    regions: Region[];
 }
 
-export function hexpad4(n) {
-    return `0x${n.toString(16).toUpperCase().padStart(4, '0')}`;
-}
+const defaultState: FileState = {
+    detectedRegionNames: new Set<string>(),
+    loaded: {},
+    mcubootFilePath: undefined,
+    memMaps: [],
+    mruFiles: [],
+    regions: [],
+};
 
-export function hexpad2(n) {
-    return `0x${n.toString(16).toUpperCase().padStart(2, '0')}`;
-}
+export default (state = defaultState, action: any): FileState =>
+    produce<FileState>(state, draft => {
+        switch (action.type) {
+            case fileActions.FILES_EMPTY:
+                return {
+                    ...defaultState,
+                    mruFiles: state.mruFiles,
+                };
 
-export function hexToKiB(n) {
-    return `${n / 1024} KiB`;
-}
+            case fileActions.FILE_PARSE:
+                draft.memMaps = action.memMaps;
+                draft.loaded = action.loaded;
+                break;
 
-export function hexToMiB(n) {
-    return `${n / 1024 / 1024} MiB`;
-}
+            case fileActions.FILE_REGIONS_KNOWN:
+                draft.regions = action.regions;
+                break;
+
+            case fileActions.FILE_REGION_NAMES_KNOWN:
+                draft.detectedRegionNames = action.detectedRegionNames;
+                break;
+
+            case fileActions.MRU_FILES_LOAD_SUCCESS:
+                draft.mruFiles = action.files || [];
+                break;
+
+            case fileActions.MCUBOOT_FILE_KNOWN:
+                draft.mcubootFilePath = action.filePath;
+                break;
+
+            default:
+        }
+    });

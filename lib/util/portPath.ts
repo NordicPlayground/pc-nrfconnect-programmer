@@ -34,42 +34,14 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { List, Record, Set } from 'immutable';
-
-import * as fileActions from '../actions/fileActions';
-
-const InitialState = new Record({
-    detectedRegionNames: new Set(),
-    loaded: {},
-    mcubootFilePath: null,
-    memMaps: [],
-    mruFiles: [],
-    regions: new List(),
-});
-
-export default function reducer(state = new InitialState(), action) {
-    switch (action.type) {
-        case fileActions.FILES_EMPTY:
-            return new InitialState().set('mruFiles', state.mruFiles);
-
-        case fileActions.FILE_PARSE:
-            return state
-                .set('memMaps', action.memMaps)
-                .set('loaded', action.loaded);
-
-        case fileActions.FILE_REGIONS_KNOWN:
-            return state.set('regions', action.regions);
-
-        case fileActions.FILE_REGION_NAMES_KNOWN:
-            return state.set('detectedRegionNames', action.detectedRegionNames);
-
-        case fileActions.MRU_FILES_LOAD_SUCCESS:
-            return state.set('mruFiles', action.files || []);
-
-        case fileActions.MCUBOOT_FILE_KNOWN:
-            return state.set('mcubootFilePath', action.filePath);
-
-        default:
-    }
-    return state;
-}
+/**
+ * Prefer to use the serialport 8 property or fall back to the serialport 7 property.
+ *
+ * @param {any} serialPort serialport v8/v7
+ *
+ * @returns {string} the path of serialport
+ * appended with the result of each promise.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default (serialPort: any): string =>
+    serialPort ? serialPort.path || serialPort.comName : undefined;

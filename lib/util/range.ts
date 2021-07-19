@@ -34,6 +34,13 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-// Prefer to use the serialport 8 property or fall back to the serialport 7 property
-export default serialPort =>
-    serialPort ? serialPort.path || serialPort.comName : undefined;
+/**
+ * Create an array of numbers from start and up to (and including) end.
+ *
+ * @param {number} start Start of range.
+ * @param {number} end End of range.
+ *
+ * @returns {Array} Range of numbers.
+ */
+export default (start: number, end: number): Array<number> =>
+    Array.from({ length: end + 1 - start }, (_, i) => i + start);

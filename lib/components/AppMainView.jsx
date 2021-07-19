@@ -34,8 +34,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import McuUpdateDialogView from '../containers/mcuUpdateDialogView';
 import MemoryBoxView from '../containers/memoryBoxView';
@@ -93,7 +93,7 @@ AppMainView.propTypes = {
     target: PropTypes.shape({
         serialNumber: PropTypes.string,
         deviceInfo: PropTypes.object,
-        regions: PropTypes.object,
+        regions: PropTypes.array,
     }).isRequired,
 };
 

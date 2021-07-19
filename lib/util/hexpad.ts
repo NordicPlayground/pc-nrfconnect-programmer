@@ -34,21 +34,56 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/* eslint-disable import/prefer-default-export */
+/**
+ * Takes in an integer, returns a string
+ * representing that integer as a string of 8 hexadecimal
+ * numbers prepended by '0x'.
+ *
+ * @param {number} n the number to be operated
+ *
+ * @returns {string} padded string
+ */
+export const hexpad8 = (n: number): string =>
+    `0x${n.toString(16).toUpperCase().padStart(8, '0')}`;
 
 /**
- * Run promises in sequence and return the result in an array.
+ * Takes in an integer, returns a string
+ * representing that integer as a string of 4 hexadecimal
+ * numbers prepended by '0x'.
  *
- * @param {Function} fun Function that returns a promise.
- * @param {Array} results Initial array that will hold the results.
- * @param {Array} first First arguments in array.
- * @param {Array} rest Rest of the arguments in array.
- * @returns {Array} Promise resolved to the initial results array
- * appended with the result of each promise.
+ * @param {number} n the number to be operated
+ *
+ * @returns {string} padded string
  */
-export const sequence = (fun, results = [], first, ...rest) =>
-    first
-        ? fun(...first).then(result =>
-              sequence(fun, [...results, result], ...rest)
-          )
-        : Promise.resolve(results);
+export const hexpad4 = (n: number): string =>
+    `0x${n.toString(16).toUpperCase().padStart(4, '0')}`;
+
+/**
+ * Takes in an integer, returns a string
+ * representing that integer as a string of 2 hexadecimal
+ * numbers prepended by '0x'.
+ *
+ * @param {number} n the number to be operated
+ *
+ * @returns {string} padded string
+ */
+export const hexpad2 = (n: number): string =>
+    `0x${n.toString(16).toUpperCase().padStart(2, '0')}`;
+
+/**
+ * Takes in an integer of the number in Byte and return the number in KiB
+ *
+ * @param {number} n the number in Byte
+ *
+ * @returns {string} the number in KiB
+ */
+export const hexToKiB = (n: number): string => `${n / 1024} KiB`;
+
+/**
+ * Takes in an integer of the number in Byte and return the number in KiB
+ *
+ * @param {number} n the number in Byte
+ *
+ * @returns {string} the number in MiB
+ */
+export const hexToMiB = (n: number) => `${n / 1024 / 1024} MiB`;

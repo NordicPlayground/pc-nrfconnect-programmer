@@ -35,12 +35,27 @@
  */
 
 /**
- * Creates an array of numbers from start and up to (and including) end.
+ * Run promises in sequence and return the result in an array.
  *
- * @param {number} start Start of range.
- * @param {number} end End of range.
- * @returns {Array} Range of numbers.
+ * @param {Function} fun Function that returns a promise
+ * @param {Array} results Initial array that will hold the results
+ * @param {Array} argsArray First arguments in array
+ *
+ * @returns {Promise} Promise resolved to the initial results array
+ * appended with the result of each promise
  */
-export default function range(start, end) {
-    return Array.from({ length: end + 1 - start }, (_, i) => i + start);
-}
+const sequence = (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    fun: (...args: any) => Promise<unknown>,
+    results: Array<unknown> = [],
+    argsArray: Array<Array<unknown>>
+): Promise<unknown> => {
+    const [first, ...rest] = argsArray;
+    return first
+        ? fun(...first).then(result =>
+              sequence(fun, [...results, result], rest)
+          )
+        : Promise.resolve(results);
+};
+
+export default sequence;

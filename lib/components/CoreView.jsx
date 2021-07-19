@@ -34,8 +34,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import RegionView from '../containers/regionView';
 
@@ -50,7 +50,7 @@ const CoreView = ({ core, active }) => {
     // generate a gap view between regions
     let lastAddress = romBaseAddr;
     regions
-        .sortBy(r => r.startAddress)
+        .sort((a, b) => a.startAddress - b.startAddress)
         .forEach(region => {
             const { startAddress, regionSize } = region;
 
